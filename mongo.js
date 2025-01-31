@@ -1,14 +1,7 @@
+require('dotenv').config()
 const mongoose = require('mongoose')
 
-if (process.argv.length<3) {
-  console.log('give password as argument')
-  process.exit(1)
-}
-
-const password = process.argv[2]
-
-const url =
-  `mongodb+srv://asteer:${password}@webohjelmointi.mrqjf.mongodb.net/phonebook?retryWrites=true&w=majority&appName=WebOhjelmointi`
+const url = process.env.MONGODB_URI
 
 mongoose.set('strictQuery', false)
 mongoose.connect(url)
@@ -21,7 +14,7 @@ const personSchema = new mongoose.Schema({
 const Person = mongoose.model('Person', personSchema)
 
 
-if (process.argv.length == 3) {
+if (process.argv.length == 2) {
   console.log("phonebook: ")
   Person.find({}).then(result => {
     result.forEach(note => {
@@ -31,7 +24,7 @@ if (process.argv.length == 3) {
   })
 }
 
-else if (process.argv.length=5) {
+else if (process.argv.length=4) {
   const person = new Person({
     name: process.argv[3],
     number: process.argv[4],
